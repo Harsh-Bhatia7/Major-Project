@@ -18,6 +18,7 @@ This package provides a complete workflow for iris flower classification using m
 - **Model Storage**: Save and load trained models and preprocessors
 - **Prediction**: Predict iris species based on flower measurements
 - **Interactive Web Interface**: User-friendly Streamlit interface for making predictions
+- **Comprehensive Testing**: Extensive unit tests for all components and pipelines
 
 ## Installation
 
@@ -58,12 +59,21 @@ classifier.run_full_workflow()
 
 # Predict the species for a new flower
 species = classifier.predict_iris_species(
-    sepal_length=5.1, 
-    sepal_width=3.5, 
-    petal_length=1.4, 
+    sepal_length=5.1,
+    sepal_width=3.5,
+    petal_length=1.4,
     petal_width=0.2
 )
 print(f"Predicted species: {species}")
+```
+
+### Running Tests
+
+The package includes comprehensive unit tests to ensure all components work correctly.
+
+```bash
+# Run all unit tests with the custom test runner
+python -m unit_tests.run_all_tests
 ```
 
 ## Available Models
@@ -93,6 +103,15 @@ Major-Project/
 │   ├── model_storage.py      # Model saving/loading
 │   ├── model_train.py        # Model training utilities
 │   └── main.py               # Entry point
+├── unit_tests/               # Unit test package
+│   ├── __init__.py
+│   ├── custom_test_runner.py # Custom test runner with improved output
+│   ├── run_all_tests.py      # Test runner script
+│   ├── test_classifier_functions.py  # Tests for classifier components
+│   ├── test_database.py      # Tests for database functionality
+│   ├── test_performance.py   # Performance benchmark tests
+│   ├── test_pipeline.py      # Pipeline integration tests
+│   └── test_ui_navigation.py # UI navigation tests
 ├── README.md
 └── setup.py
 ```
@@ -108,6 +127,7 @@ Major-Project/
 - colorlog
 - joblib
 - streamlit
+- psutil (for performance tests)
 
 ## License
 

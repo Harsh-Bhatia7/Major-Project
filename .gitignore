@@ -33,3 +33,4 @@ confusion_matrix.png
 decision_tree.png
 pca_visualization.png
 tmp.py
+.mypy_cache/

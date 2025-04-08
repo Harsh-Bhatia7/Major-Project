@@ -70,7 +70,7 @@ def main():
 
             # Get the explained variance ratio from the PCA model
             explained_variance = classifier.pca.explained_variance_ratio_ * 100
-            
+
             ax.set_title('PCA of Iris Dataset')
             ax.set_xlabel(f'Principal Component 1 ({explained_variance[0]:.1f}% variance)')
             ax.set_ylabel(f'Principal Component 2 ({explained_variance[1]:.1f}% variance)')

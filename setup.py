@@ -12,6 +12,7 @@ setup(
         "numpy",
         "colorlog",
         "joblib",
+        "streamlit",
     ],
     author="Harsh Bhatia",
     author_email="harshbhatia0007@gmail.com",

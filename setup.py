@@ -15,8 +15,8 @@ setup(
         "streamlit",
         "psutil",  # Required for performance tests
     ],
-    author="Harsh Bhatia",
-    author_email="harshbhatia0007@gmail.com",
+    author="Harsh Bhatia, Krish Talwar",
+    author_email="harshbhatia0007@gmail.com, krishtalwar271@gmail.com",
     description="Iris flower classification using machine learning",
     keywords="machine learning, classification, iris dataset",
     python_requires=">=3.6",

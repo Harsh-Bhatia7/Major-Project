@@ -27,4 +27,4 @@ __all__ = [
 
 # Package metadata
 __version__ = '0.1.0'
-__author__ = 'Harsh Bhatia'
+__author__ = 'Harsh Bhatia, Krish Talwar'

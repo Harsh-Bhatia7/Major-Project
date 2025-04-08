@@ -156,7 +156,7 @@ def main():
         st.subheader("Confusion Matrix for Current Model")
         y_pred = classifier.model.predict(X_test)
 
-        fig, ax = plt.subplots(figsize=(10, 8))
+        fig, ax = plt.subplots(figsize=(20, 5))
         from sklearn.metrics import confusion_matrix
         conf_matrix = confusion_matrix(y_test, y_pred)
 

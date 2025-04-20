@@ -27,12 +27,26 @@ class DataLoader:
             db_path (str, optional): Path to the SQLite database
             csv_path (str, optional): Path to the iris CSV file
         """
+
         self.logger.info("Step 2: Data Collection - Loading Iris dataset")
 
-        if source_type == "db":
-            return self._load_from_database(db_path)
+        # Set default paths relative to current script
+        if csv_path is None:
+            base_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+            self.csv_path = os.path.join(base_path, "dataset", "iris_species", "Iris.csv")
         else:
-            return self._load_from_csv(csv_path)
+            self.csv_path = csv_path
+
+        if db_path is None:
+            base_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+            self.db_path = os.path.join(base_path, "dataset", "iris_species", "database.sqlite")
+        else:
+            self.db_path = db_path
+
+        if source_type == "db":
+            return self._load_from_database(self.db_path)
+        else:
+            return self._load_from_csv(self.csv_path)
 
     def _load_from_database(self, db_path=None):
         """Load the Iris dataset from SQLite database"""

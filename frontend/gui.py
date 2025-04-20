@@ -18,9 +18,44 @@ def main():
     @st.cache_resource
     def get_classifier():
         classifier = IrisClassifier()
-        # Load saved model instead of running full workflow
         classifier.model_saver.create_model_directory()
-        classifier.model, classifier.scaler, classifier.pca = classifier.model_saver.load_model_and_preprocessors()
+
+        try:
+            # Try to load saved model
+            classifier.model, classifier.scaler, classifier.pca = classifier.model_saver.load_model_and_preprocessors()
+
+            # After loading model, check if there's a better model option
+            # Load and process the data for comparison
+            classifier.iris, iris_df = classifier.data_loader.load_iris_dataset()
+            X_scaled = classifier.feature_processor.scale_features(classifier.iris.data)
+            X_pca, _ = classifier.feature_processor.apply_pca(X_scaled)
+
+            # Split data for proper model comparison
+            X_train, X_test, y_train, y_test = classifier.model_trainer.split_data(
+                X_pca, classifier.iris.target
+            )
+
+            # Compare model performance
+            results, best_model_name, best_model = classifier.model_trainer.compare_models(
+                X_train, X_test, y_train, y_test
+            )
+
+            # If a better model exists, use it automatically
+            if best_model_name != classifier.model_type:
+                classifier.model = best_model
+                classifier.model_type = best_model_name
+                # Save the new model
+                classifier.model_saver.save_model_and_preprocessors(classifier.model, classifier.scaler, classifier.pca)
+                st.info(f"Automatically upgraded to better model: {best_model_name}")
+
+        except FileNotFoundError:
+            # If model files don't exist, train a new model
+            with st.spinner("Initial model setup in progress. This may take a moment..."):
+                # Load data
+                classifier.iris, iris_df = classifier.data_loader.load_iris_dataset()
+                # Run workflow with model comparison to get the best model from the start
+                classifier.run_full_workflow(perform_hyperparameter_tuning=False, compare_models=True)
+            st.success("Model setup complete! Using the best performing model.")
 
         # Load iris dataset for display and reference
         classifier.iris, iris_df = classifier.data_loader.load_iris_dataset()
@@ -148,14 +183,6 @@ def main():
 
         st.subheader("Current Model: " + classifier.model_type)
         st.write(f"Best performing model from comparison: **{best_model_name}**")
-        if best_model_name != classifier.model_type:
-            if st.button("Use Best Model Instead"):
-                # Update the classifier to use the best model
-                classifier.model = results[best_model_name]['model']
-                classifier.model_type = best_model_name
-                # Save the new model
-                classifier.model_saver.save_model_and_preprocessors(classifier.model, classifier.scaler, classifier.pca)
-                st.success(f"Model updated to {best_model_name}")
 
         # Display confusion matrix for current model
         st.subheader("Confusion Matrix for Current Model")

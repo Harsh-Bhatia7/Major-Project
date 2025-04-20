@@ -32,7 +32,15 @@ class ModelSaver:
 
     def load_model_and_preprocessors(self):
         """Load the trained model and preprocessors"""
-        model = joblib.load(os.path.join(self.model_dir, 'decision_tree_model.pkl'))
-        scaler = joblib.load(os.path.join(self.model_dir, 'scaler.pkl'))
-        pca = joblib.load(os.path.join(self.model_dir, 'pca.pkl'))
+        model_path = os.path.join(self.model_dir, 'decision_tree_model.pkl')
+        scaler_path = os.path.join(self.model_dir, 'scaler.pkl')
+        pca_path = os.path.join(self.model_dir, 'pca.pkl')
+
+        if not all(os.path.exists(p) for p in [model_path, scaler_path, pca_path]):
+            self.logger.warning("Model files not found. You'll need to train a new model.")
+            raise FileNotFoundError("Model files not found")
+
+        model = joblib.load(model_path)
+        scaler = joblib.load(scaler_path)
+        pca = joblib.load(pca_path)
         return model, scaler, pca
